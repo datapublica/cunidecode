@@ -10,7 +10,7 @@ if not hasattr(unittest, 'skipIf'):
         def d(f):
             def df(*args):
                 if condition:
-                    print ("skipped %r" % (reason,))
+                    print(("skipped %r" % (reason,)))
                 else:
                     return f(*args)
             return df
@@ -19,21 +19,21 @@ if not hasattr(unittest, 'skipIf'):
 
 class TestUnidecode(unittest.TestCase):
     def test_ascii(self):
-        for n in xrange(32,128):
-            t = unichr(n)
+        for n in range(32,128):
+            t = chr(n)
             self.assertEqual(unidecode(t), t)
 
     def test_bmp(self):
         for n in range(0, 0x10000):
             # Just check that it doesn't throw an exception
-            t = unichr(n)
+            t = chr(n)
             unidecode(t)
 
     def test_circled_latin(self):
         # 1 sequence of a-z
         for n in range(0, 26):
             a = chr(ord('a') + n)
-            b = unidecode(unichr(0x24d0 + n))
+            b = unidecode(chr(0x24d0 + n))
 
             self.assertEqual(b, a)
 
@@ -41,49 +41,49 @@ class TestUnidecode(unittest.TestCase):
 
         TESTS = [
  
-                (u"Hello, World!", 
+                ("Hello, World!", 
                 "Hello, World!"),
 
-                (u"'\"\r\n",
+                ("'\"\r\n",
                  "'\"\r\n"),
 
-                (u"ČŽŠčžš",
+                ("ČŽŠčžš",
                  "CZSczs"),
 
-                (u"ア",
+                ("ア",
                  "a"),
 
-                (u"α",
+                ("α",
                 "a"),
 
-                (u"а",
+                ("а",
                 "a"),
 
-                (u'ch\xe2teau',
+                ('ch\xe2teau',
                 "chateau"),
 
-                (u'vi\xf1edos',
+                ('vi\xf1edos',
                 "vinedos"),
                 
-                (u"\u5317\u4EB0",
+                ("\u5317\u4EB0",
                 "Bei Jing "),
 
-                (u"Efﬁcient",
+                ("Efﬁcient",
                 "Efficient"),
 
                 # https://github.com/iki/unidecode/commit/4a1d4e0a7b5a11796dc701099556876e7a520065
-                (u'příliš žluťoučký kůň pěl ďábelské ódy',
+                ('příliš žluťoučký kůň pěl ďábelské ódy',
                 'prilis zlutoucky kun pel dabelske ody'),
 
-                (u'PŘÍLIŠ ŽLUŤOUČKÝ KŮŇ PĚL ĎÁBELSKÉ ÓDY',
+                ('PŘÍLIŠ ŽLUŤOUČKÝ KŮŇ PĚL ĎÁBELSKÉ ÓDY',
                 'PRILIS ZLUTOUCKY KUN PEL DABELSKE ODY'),
 
                 # Table that doesn't exist
-                (u'\ua500',
+                ('\ua500',
                 ''),
                 
                 # Table that has less than 256 entriees
-                (u'\u1eff',
+                ('\u1eff',
                 ''),
             ]
 
@@ -288,9 +288,8 @@ class TestUnidecode(unittest.TestCase):
             #chr(194)+chr(163) : '',
         }
 
-        for utf8_input, correct_output in wp_remove_accents.iteritems():
-            input = utf8_input.decode('utf8')
-            output = unidecode(input)
+        for utf8_input, correct_output in wp_remove_accents.items():
+            output = unidecode(utf8_input.encode('latin1').decode('utf8'))
 
             self.assertEqual(correct_output, output)
 

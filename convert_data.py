@@ -1,7 +1,7 @@
 from collections import OrderedDict
 import glob
 import os
-from cStringIO import StringIO
+from io import StringIO
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(CUR_DIR, 'data')
@@ -27,7 +27,7 @@ def escape(string):
 def convert_data():
     file_name_pattern = 'x0*.py'
     pattern = os.path.join(DATA_DIR, file_name_pattern)
-    data_dict = OrderedDict((i, None) for i in xrange(256))
+    data_dict = OrderedDict((i, None) for i in range(256))
     for file in glob.iglob(pattern):
         mod_hex_name = os.path.basename(file)[:-3]
         mod_dec_name = int('0' + mod_hex_name, base=16)
@@ -35,24 +35,24 @@ def convert_data():
         data = list(mod.data)
         if len(data) != 256:
             diff = 256 - len(data)
-            data.extend(['' for _ in xrange(diff)])
+            data.extend(['' for _ in range(diff)])
         data_dict[mod_dec_name] = data
 
-    for k, v in data_dict.items():
+    for k, v in list(data_dict.items()):
         if v is None:
-            data_dict[k] = ['' for _ in xrange(256)]
+            data_dict[k] = ['' for _ in range(256)]
 
     # Only transliterate two characters below ASCII code point 32
     data_dict[0][10] = '\n'
     data_dict[0][13] = '\r'
 
-    for i in xrange(32, 128):
+    for i in range(32, 128):
         data_dict[0][i] = chr(i)
 
     with open(os.path.join(CUR_DIR, 'data.h'), 'w') as s:
         s.write('char* data[256][256] = {\n')
 
-        for strings in data_dict.values():
+        for strings in list(data_dict.values()):
             s.write('\t{\n')
 
             string_list = []

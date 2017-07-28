@@ -1,5 +1,16 @@
 cUnidecode
 ==========
+
+This fork repository
+--------------
+
+This repository contains a fork of cunidecode adapted for python3 with a performance optimization inside the C code (adaptive buffer).
+
+Fork author: Loic Petit (http://github.com/WydD/)
+
+Original repository readme below.
+
+
 lossy ASCII transliterations of Unicode text
 --------------------------------------------
 
